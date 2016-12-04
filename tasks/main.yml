@@ -1,11 +1,19 @@
 ---
 # tasks file for drone
 
-- name: Install dependencies
+- name: Install dependencies EL6
+  yum: name={{ item }} state=latest
+  with_items:
+    - docker-io
+    - python-pip
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
+
+- name: Install dependencies EL7
   yum: name={{ item }} state=latest
   with_items:
     - docker
     - python-pip
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
 
 - name: Install docker-py
   shell: pip install docker-py
