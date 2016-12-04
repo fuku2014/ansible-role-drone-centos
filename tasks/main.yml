@@ -1,0 +1,41 @@
+---
+# tasks file for drone
+
+- name: Install dependencies
+  yum: name={{ item }} state=latest
+  with_items:
+    - docker
+    - python-pip
+
+- name: Install docker-py
+  shell: pip install docker-py
+
+- name: Start docker
+  service: name=docker state=started enabled=yes
+
+- name: Create Directory
+  file: path=/var/lib/drone state=directory
+
+- name: Run drone container
+  docker_container:
+    image: "drone/drone"
+    pull: true
+    name: drone
+    state: started
+    restart_policy: always
+    detach: true
+    privileged: true
+    env:
+      DATABASE_DRIVER: "{{ drone_database_driver }}"
+      DATABASE_CONFIG: "{{ drone_database_config }}"
+      REMOTE_DRIVER: "{{ drone_remote_driver }}"
+      REMOTE_CONFIG: "{{ drone_remote_config }}"
+      DOCKER_HOST: unix://ver/run/docker.sock
+      PLUGIN_FILTER: plugins/*
+    volumes:
+      - "/var/lib/drone:/var/lib/drone"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    expose:
+      - "{{ drone_port }}"
+    ports:
+        - "{{ drone_port }}:8000"

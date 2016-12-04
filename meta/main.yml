@@ -1,0 +1,10 @@
+galaxy_info:
+  author: fuku2014
+  description: Install drone.io and it's dependencies
+  license: Apache License, Version 2.0
+  min_ansible_version: 2.0
+  platforms:
+  - name: EL
+    versions:
+    - 7
+dependencies: []

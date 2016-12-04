@@ -1,0 +1,8 @@
+---
+# defaults file for drone
+
+drone_database_driver: mysql
+drone_database_config: root@tcp(localhost:3306)/drone?parseTime=true
+drone_remote_driver: github
+drone_remote_config: https://github.com?client_id=xxxxx&client_secret=xxxxxx
+drone_port: 8000
